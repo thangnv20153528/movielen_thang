@@ -45,7 +45,7 @@ class MF(object):
 
         users = self.Y_raw_data[:, user_col] 
         self.mu = np.zeros((n_objects,)) # chứa mean của sao do 1 người dùng đánh giá 
-        for n in xrange(n_objects):
+        for n in range(n_objects):
             # row indices of rating done by user n
             # since indices need to be integers, we need to convert
             ids = np.where(users == n)[0].astype(np.int32)
@@ -63,7 +63,7 @@ class MF(object):
 
     def loss(self):
         L = 0 
-        for i in xrange(self.Y_data_n.shape[0]):
+        for i in range(self.Y_data_n.shape[0]):
             # user, item, rating
             n, m, rate = int(self.Y_data_n[i, 0]), int(self.Y_data_n[i, 1]), self.Y_data_n[i, 2]
             L += 0.5*(rate - self.X[m, :].dot(self.W[:, n]))**2
@@ -98,7 +98,7 @@ class MF(object):
         return (user_ids, ratings)
         
     def updateX(self):
-        for m in xrange(self.n_items):
+        for m in range(self.n_items):
             user_ids, ratings = self.get_users_who_rate_item(m)
             Wm = self.W[:, user_ids]
             grad_xm = -(ratings - self.X[m, :].dot(Wm)).dot(Wm.T)/self.n_ratings + \
@@ -106,7 +106,7 @@ class MF(object):
             self.X[m, :] -= self.learning_rate*grad_xm.reshape((self.K,))
 
     def updateW(self):
-        for n in xrange(self.n_users):
+        for n in range(self.n_users):
             item_ids, ratings = self.get_items_rated_by_user(n)
             Xn = self.X[item_ids, :]
             grad_wn = -Xn.T.dot(ratings - Xn.dot(self.W[:, n]))/self.n_ratings + \
@@ -115,7 +115,7 @@ class MF(object):
     
     def fit(self):
         self.normalize_Y()
-        for it in xrange(self.max_iter):
+        for it in range(self.max_iter):
             self.updateX()
             self.updateW()
             if (it + 1) % self.print_every == 0:
@@ -150,7 +150,7 @@ class MF(object):
         
         y_pred = self.X.dot(self.W[:, user_id]) + self.mu[user_id]
         predicted_ratings= []
-        for i in xrange(self.n_items):
+        for i in range(self.n_items):
             if i not in items_rated_by_u:
                 predicted_ratings.append((i, y_pred[i]))
         
@@ -159,7 +159,7 @@ class MF(object):
     def evaluate_RMSE(self, rate_test):
         n_tests = rate_test.shape[0]
         SE = 0 # squared error
-        for n in xrange(n_tests):
+        for n in range(n_tests):
             pred = self.pred(rate_test[n, 0], rate_test[n, 1])
             SE += (pred - rate_test[n, 2])**2 
 
