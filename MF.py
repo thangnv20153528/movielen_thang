@@ -136,6 +136,7 @@ class MF(object):
         else: 
             bias = self.mu[i]
         pred = self.X[i, :].dot(self.W[:, u]) + bias 
+        #  1 <= rating <= 5   
         if pred < 1:
             return 1 
         if pred > 5: 

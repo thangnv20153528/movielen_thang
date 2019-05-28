@@ -14,9 +14,20 @@ rate_test = ratings_test.as_matrix()
 rate_train[:, :2] -= 1
 rate_test[:, :2] -= 1
 
+# user-based
+
+# rs = MF(rate_train, K = 10, lam = .1, print_every = 10, 
+#     learning_rate = 0.75, max_iter = 100, user_based = 1)
+# rs.fit()
+# # evaluate on test data
+# RMSE = rs.evaluate_RMSE(rate_test)
+# print ('\nUser-based MF, RMSE =', RMSE)
+
+# item-based
+
 rs = MF(rate_train, K = 10, lam = .1, print_every = 10, 
-    learning_rate = 0.75, max_iter = 100, user_based = 1)
+    learning_rate = 0.75, max_iter = 100, user_based = 0)
 rs.fit()
 # evaluate on test data
 RMSE = rs.evaluate_RMSE(rate_test)
-print ('\nUser-based MF, RMSE =', RMSE)
+print ('\nItem-based MF, RMSE =', RMSE)
